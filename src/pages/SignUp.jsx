@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 import GAuth from "../components/GAuth";
-
+import { db } from "../firebase";
+import { toast } from "react-toastify";
+import { serverTimestamp, setDoc, doc } from "firebase/firestore";
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -10,6 +17,7 @@ export default function SignUp() {
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
   const { name, email, password } = formData;
 
   function onChange(e) {
@@ -18,6 +26,38 @@ export default function SignUp() {
       [e.target.id]: e.target.value,
     }));
   }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const auth = getAuth();
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      updateProfile(auth.currentUser, {
+        displayName: name,
+      });
+
+      const user = userCredential.user;
+      const formDataCopy = { ...formData };
+      delete formDataCopy.password;
+      formDataCopy.timestamp = serverTimestamp();
+      await setDoc(doc(db, "users", user.uid), formDataCopy);
+      navigate("/");
+    } catch (error) {
+      // console.log(error.code);
+
+      if (error.code === "auth/invalid-email") {
+        toast.error("Please use a valid email address!");
+      } else if (error.code === "auth/weak-password") {
+        toast.error("Please use a strong password!");
+      } else {
+        toast.error("Something went wrong with the registration!");
+      }
+    }
+  };
+
   return (
     <div>
       <h1 className="text-3xl text-center mt-6 font-bold ">Sign Up</h1>
@@ -30,7 +70,7 @@ export default function SignUp() {
           />
         </div>
         <div className="w-full md:[67%] lg:w-[40%] lg:ml-20">
-          <form>
+          <form onSubmit={handleSubmit}>
             <input
               className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
               type="text"
