@@ -26,7 +26,7 @@ export default function SignUp() {
       [e.target.id]: e.target.value,
     }));
   }
-  const handleSubmit = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     try {
       const auth = getAuth();
@@ -70,7 +70,7 @@ export default function SignUp() {
           />
         </div>
         <div className="w-full md:[67%] lg:w-[40%] lg:ml-20">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={onSubmit}>
             <input
               className="mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out"
               type="text"
