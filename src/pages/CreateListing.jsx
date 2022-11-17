@@ -179,6 +179,7 @@ export default function CreateListing() {
   if (loading) {
     return <Spinner />;
   }
+
   return (
     <main className=" max-w-md px-2 mx-auto">
       <h1 className="text-3xl text-center mt-6 font-bold">Create a listing</h1>
