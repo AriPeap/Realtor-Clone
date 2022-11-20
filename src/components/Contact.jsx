@@ -17,6 +17,7 @@ export default function Contact({ userRef, listing }) {
         toast.error("Could not get landlord data");
       }
     }
+    getLandlord();
   }, [userRef]);
 
   function onChange(e) {
