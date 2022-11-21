@@ -37,13 +37,12 @@ export default function Home() {
           });
         });
         setOfferListings(listings);
-        console.log("offer:", offerListings);
       } catch (error) {
         console.log(error);
       }
     }
     fecthListings();
-  }, []);
+  }, [offerListings]);
 
   // Places for rent
   const [rentListings, setRentListings] = useState(null);
