@@ -23,7 +23,7 @@ export default function Home() {
         // create the query
         const q = query(
           listingRef,
-          where("offer", "==", true),
+          where("offer", "==", "true"),
           orderBy("timestamp", "desc"),
           limit(4)
         );
@@ -37,6 +37,7 @@ export default function Home() {
           });
         });
         setOfferListings(listings);
+        console.log("offer:", offerListings);
       } catch (error) {
         console.log(error);
       }

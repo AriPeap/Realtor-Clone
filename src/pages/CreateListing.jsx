@@ -16,7 +16,7 @@ import { useNavigate } from "react-router";
 export default function CreateListing() {
   const navigate = useNavigate();
   const auth = getAuth();
-  const [geolocationEnabled, setGeolocationEnabled] = useState(false);
+  const [geolocationEnabled, setGeolocationEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: "rent",
@@ -139,7 +139,7 @@ export default function CreateListing() {
       geolocation.lng = data.results[0]?.geometry.location.lng ?? 0;
 
       location = data.status === "ZERO_RESULTS" && undefined;
-      if (location === undefined || location.includes("undifined")) {
+      if (location === undefined) {
         setLoading(false);
         toast.error("Please enter a correct address");
         return;
